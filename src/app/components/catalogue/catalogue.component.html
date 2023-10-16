@@ -1,0 +1,10 @@
+<div class="flex flex-column justify-content-center align-items-center w-full mt-2">
+    <main class="flex justify-content-center w-full mb-2">
+        <ul class="list-none m-0 p-0 w-full justify-content-between gap-2">
+            <li *ngFor="let product of products">
+                <app-product-card [product]="product"></app-product-card>
+            </li>
+        </ul>
+
+    </main>
+</div>
