@@ -1,11 +1,14 @@
 <form action="" [formGroup]="product">
     <div class="formgrid grid">
+
         <div class="field col-12 md:col-6">
             <label for="name">Nombre:</label>
             <input pInputText id="name" type="text" class="w-full" formControlName="name">
             <small class="p-error" *ngIf="hasError('name','required')">El nombre es requerido</small>
-            <small class="p-error" *ngIf="hasError('name','maxlength')">El nombre debe tener máximo 15 caracteres</small>
+            <small class="p-error" *ngIf="hasError('name','maxlength')">El nombre debe tener máximo 15
+                caracteres</small>
         </div>
+
         <div class="field col-12 md:col-6">
             <label for="sku">SKU:</label>
             <input pInputText id="sku" type="text" class=" w-full" formControlName="sku">
@@ -13,42 +16,49 @@
             <small class="p-error" *ngIf="hasError('sku','maxlength')">El SKU debe tener máximo 10 caracteres</small>
             <small class="p-error" *ngIf="hasError('sku','minlength')">El SKU debe tener mínimo 5 caracteres</small>
         </div>
+
         <div class="field col-12">
             <label for="description">Descripción</label>
             <textarea rows="5" cols="30" pInputTextarea formControlName="description"
                 class="text-base text-color p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary w-full"></textarea>
             <small class="p-error" *ngIf="hasError('description', 'required')">La descripción es requerida</small>
-            <small class="p-error" *ngIf="hasError('description', 'maxlength')">La descripción debe tener máximo 250 caractreres</small>
+            <small class="p-error" *ngIf="hasError('description', 'maxlength')">La descripción debe tener máximo 250
+                caractreres</small>
         </div>
+
         <div class="field col-12 md:col-6">
-            <label for="price">Precio:</label>
+            <label for="price">
+                Precio:
+                <p-tag *ngIf="updating" (click)="openHistoryModal(1)" class="cursor-pointer" icon="pi pi-history" pTooltip="Ver historial de precios"
+                    tooltipPosition="top"></p-tag>
+            </label>
             <p-inputNumber formControlName="price" class="w-full" styleClass="w-full" mode="decimal"
                 [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
             <small class="p-error" *ngIf="hasError('price', 'required')">El precio es requerido</small>
         </div>
+
         <div class="field col-12 md:col-6">
-            <label for="stock">Stock:</label>
+            <label for="stock">
+                Stock:
+                <p-tag *ngIf="updating" (click)="openHistoryModal(2)" class="cursor-pointer" icon="pi pi-history" pTooltip="Ver historial de stock"
+                    tooltipPosition="top"></p-tag>
+            </label>
             <p-inputNumber formControlName="stock" class="w-full" styleClass="w-full"> </p-inputNumber>
             <small class="p-error" *ngIf="hasError('stock', 'required')">El stock es requerido</small>
         </div>
+
         <div class="field col-12">
             <p>Etiquetas:</p>
             <p-chips class="w-full" styleClass="w-full" [separator]="separatorExp" formControlName="tags"
                 placeholder="Hint: a, b c"></p-chips>
             <small class="p-error" *ngIf="hasError('tags', 'required')"> Debe agregar al menos una etiqueta</small>
         </div>
-        <div class="field col-12">
+
+        <div [ngClass]="{'field': true, 'col-12': !updating, 'col-8': updating}" class="field col-12">
             <p>Imagen:</p>
-            <p-fileUpload 
-                [uploadLabel]="'Cargar'"
-                [cancelLabel]="'Cancelar'"
-                [chooseLabel]="'Seleccionar'"
-                (onSelect)="onSelect($event)"
-                (onUpload)="onUpload($event)" 
-                [multiple]="false"
-                [showUploadButton]="false"
-                [files]="selectedFiles"
-                accept="image/*">
+            <p-fileUpload [uploadLabel]="'Cargar'" [cancelLabel]="'Cancelar'" [chooseLabel]="'Seleccionar'"
+                (onSelect)="onSelect($event)" (onClear)="onClear()" (onRemove)="onRemove()" [multiple]="false"
+                [showUploadButton]="false" [files]="selectedFiles" accept="image/*">
                 <ng-template pTemplate="content">
                     <ul *ngIf="uploadedFiles.length">
                         <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
@@ -57,10 +67,43 @@
             </p-fileUpload>
             <small class="p-error" *ngIf="imageRequiredError">Debe cargar una imagen para el producto</small>
         </div>
+
+        <div class="field col-4" *ngIf="updating">
+            <p>Imagen actual:</p>
+            <img class="currentImage" [ngClass]="{'h-140': !selectedFiles.length, 'h-230': selectedFiles.length}"
+                [src]="currentImage" alt="Imagen actual del producto">
+        </div>
     </div>
 </form>
 
 <div class="flex w-full surface-50 p-3 gap-2 justify-content-end">
-    <p-button class="" icon="pi pi-check" label="Guardar" (click)="validateForm()" styleClass="p-button-text"></p-button>
-    <p-button class="" icon="pi pi-times" label="Cerrar" styleClass="p-button-text p-button-secondary"></p-button>
+    <p-button icon="pi pi-check" [label]="updating ? 'Actualizar' : 'Guardar'" (click)="validateForm()"
+        styleClass="p-button-text"></p-button>
+    <p-button icon="pi pi-times" label="Cerrar" (click)="closeModal()"
+        styleClass="p-button-text p-button-secondary"></p-button>
+    <p-button *ngIf="updating" icon="pi pi-trash" label="Eliminar" (click)="deleteProduct()"
+        styleClass="p-button-text p-button-danger"></p-button>
 </div>
+
+<!-- Historial de precios y stock -->
+<p-dialog [header]="historyHeader" [(visible)]="showHistory" [style]="{width: '50vw'}">
+    <div class="card">
+        <div class="flex w-full justify-content-center" *ngIf="!history || !history.length">
+            <h3>No hay historial para este producto</h3>
+        </div>
+        <p-table *ngIf="history && history.length" [value]="history" [tableStyle]="{ 'min-width': '100%' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Valor</th>
+                    <th>Fecha fin</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-h>
+                <tr>
+                    <td>{{ h.value }}</td>
+                    <td>{{ h.date | date }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</p-dialog>

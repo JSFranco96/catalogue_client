@@ -71,7 +71,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   #listenProductCreated() {
     this.#subs.push(
-      this.communicationService.productRegistered.subscribe(() => this.getAll(this.#currentPage))
+      this.communicationService.actionOverProduct.subscribe(() => this.getAll(this.#currentPage))
     )
   }
 }

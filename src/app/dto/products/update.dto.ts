@@ -1,13 +1,12 @@
-import { IImages } from "../../utils/interfaces"
-
 interface UpdateProductDTO {
-    name?: String
-    description?: String
-    sku?: String
-    images?: IImages
+    _id: string
+    name?: string
+    description?: string
+    sku?: string
+    images?: string
     tags?: Array<string>
-    price?: Number
-    stock?: Number
+    price?: number
+    stock?: number
 }
 
 export { UpdateProductDTO }

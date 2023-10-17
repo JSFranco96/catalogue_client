@@ -1,5 +1,3 @@
-import { IImages } from "../../utils/interfaces"
-
 interface CreateProductDTO {
     name: String
     description: String

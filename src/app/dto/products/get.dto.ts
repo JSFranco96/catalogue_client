@@ -1,8 +1,9 @@
 interface GetProductsDTO {
+    _id: string
     name: string
     sku: string
     price: number
-    images: string,
+    images: string
     tags: Array<string>
 }
 

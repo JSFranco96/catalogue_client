@@ -5,8 +5,7 @@ export interface IResponse {
     object?: any
 }
 
-export interface IImages {
-    name: string
-    url: string
-    uploaded: Boolean
+export interface IHistory {
+    value: number
+    date: Date
 }

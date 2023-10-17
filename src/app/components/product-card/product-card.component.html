@@ -2,18 +2,19 @@
     <p-card header="{{product.name}}" subheader="{{product.sku}}" [style]="{ width: '360px' }">
         <ng-template pTemplate="header">
             <section class="p-3">
-                <img alt="Imagen del producto" src="{{product.image}}"/>
+                <img alt="Imagen del producto" src="{{product.image}}" />
             </section>
         </ng-template>
         <div class="card flex justify-content-start gap-2">
-            <p-tag *ngFor="let tag of product.customTags" [severity]="tag.severity" [value]="tag.value" [rounded]="true"></p-tag>
+            <p-tag *ngFor="let tag of product.customTags" [severity]="tag.severity" [value]="tag.value"
+                [rounded]="true"></p-tag>
         </div>
         <p class="mt-1">
             {{product.price | currency}}
         </p>
         <ng-template pTemplate="footer">
             <p-button label="Modificar" icon="pi pi-pencil" (click)="showDetail()"></p-button>
-            <p-button label="Eliminar" icon="pi pi-trash" styleClass="p-button-secondary"
+            <p-button label="Eliminar" icon="pi pi-trash" (click)="deleteProduct()" styleClass="p-button-secondary"
                 [style]="{ 'margin-left': '.5em' }"></p-button>
         </ng-template>
     </p-card>

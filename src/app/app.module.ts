@@ -15,7 +15,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component'
 import { ToastModule } from 'primeng/toast'
 import { DialogService } from 'primeng/dynamicdialog'
-import { MessageService } from 'primeng/api'
+import { MessageService, ConfirmationService } from 'primeng/api'
 import { ChipsModule } from 'primeng/chips'
 import { FileUploadModule } from 'primeng/fileupload'
 import { DialogModule } from 'primeng/dialog'
@@ -30,6 +30,8 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { LoadingService } from './services/loading.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TagModule } from 'primeng/tag'
+import { ConfirmDialogModule } from 'primeng/confirmdialog'
+import { TableModule } from 'primeng/table'
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { TagModule } from 'primeng/tag'
     ReactiveFormsModule,
     TooltipModule,
     ProgressSpinnerModule,
-    TagModule
+    TagModule,
+    ConfirmDialogModule,
+    TableModule
   ],
   providers: [
     DialogService,
@@ -66,6 +70,7 @@ import { TagModule } from 'primeng/tag'
     BaseService,
     CommunicationService,
     LoadingService,
+    ConfirmationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

@@ -4,6 +4,7 @@ import { BaseService } from "./base.service";
 import { CreateProductDTO } from "../dto/products/create.dto";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
+import { UpdateProductDTO } from "../dto/products/update.dto";
 
 @Injectable()
 export class ProductsService {
@@ -18,11 +19,23 @@ export class ProductsService {
         return this.httpClient.post(this.#url, this.#configFormData(product))
     }
 
+    update(product: UpdateProductDTO): Observable<any> {
+        return this.httpClient.patch(`${this.#url}/${product._id}`, this.#configFormData(product))
+    }
+
     getAll(page: number): Observable<any> {
         return this.httpClient.get(`${this.#url}?page=${page}`)
     }
 
-    #configFormData(product: CreateProductDTO): FormData {
+    getById(id: string): Observable<any> {
+        return this.httpClient.get(`${this.#url}/${id}`)
+    }
+
+    delete(id: string): Observable<any> {
+        return this.httpClient.delete(`${this.#url}/${id}`)
+    }
+
+    #configFormData(product: CreateProductDTO | UpdateProductDTO): FormData {
         const formData = new FormData()
         for (const key in product) {
             if (Object.prototype.hasOwnProperty.call(product, key)) {

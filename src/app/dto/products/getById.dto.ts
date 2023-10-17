@@ -1,7 +1,8 @@
 interface GetProductsByIdDTO {
-    descrition: string
+    description: string
     stock: number
-    state: boolean
+    priceHistory: Array<any>
+    stockHistory: Array<any>
 }
 
 export { GetProductsByIdDTO }

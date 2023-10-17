@@ -1,0 +1,14 @@
+.currentImage {
+    object-fit: cover;
+    height: 230px;
+    max-width: 100%;
+    border-radius: 7px;
+}
+
+.h-140 {
+    height: 140px;
+}
+
+.h-230 {
+    height: 230px;
+}
