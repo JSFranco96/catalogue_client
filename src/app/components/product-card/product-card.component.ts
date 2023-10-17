@@ -55,16 +55,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       maximizable: true,
       data: this.product
     })
-
-    this.#ref.onClose.subscribe((product: any) => {
-      if (product) {
-        this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.name });
-      }
-    });
-
-    this.#ref.onMaximize.subscribe((value) => {
-      this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
-    });
   }
 
   #configureTags(): void {

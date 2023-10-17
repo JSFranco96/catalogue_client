@@ -46,16 +46,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       baseZIndex: 5,
       maximizable: true
     })
-
-    this.#ref.onClose.subscribe((product: any) => {
-      if (product) {
-        this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.name });
-      }
-    });
-
-    this.#ref.onMaximize.subscribe((value) => {
-      this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
-    });
   }
 
   onPageChange(e: any) {
