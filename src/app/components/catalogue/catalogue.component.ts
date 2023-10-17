@@ -39,6 +39,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   getAll(page: number = 0): void {
+    this.products = []
     this.#subs.push(
       this.productsService.getAll(page, this.filter).subscribe(
         (data: IResponse) => {
