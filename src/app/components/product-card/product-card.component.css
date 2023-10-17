@@ -1,0 +1,16 @@
+img {
+    max-width: 360px;
+    max-height: 200px;
+    border-radius: 3px !important;
+    object-fit: cover;
+    opacity: .8;
+}
+
+::ng-deep .p-card.p-component {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border: 2px solid #3a195f !important
+}
+
+::ng-deep .p-card-content,::ng-deep .p-card-footer {
+    padding: 0 !important;
+}

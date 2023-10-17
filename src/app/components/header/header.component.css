@@ -1,0 +1,4 @@
+::ng-deep .p-toolbar.p-component {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border: 2px solid #3a195f !important
+}

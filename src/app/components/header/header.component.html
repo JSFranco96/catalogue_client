@@ -1,13 +1,11 @@
-<p-toolbar class="sticky top-0">
+<p-toolbar class="top-0">
     <div class="p-toolbar-group-start gap-2">
-        <h2 class="m-0">CATÁLOGO</h2>
-
-        <div class="card flex justify-content-center mb-2">
+        <div class="card flex justify-content-center">
             <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecords"></p-paginator>
         </div>
     </div>
     <div class="p-toolbar-group-end gap-2">
         <p-button icon="pi pi-search"></p-button>
-        <p-button icon="pi pi-plus"></p-button>
+        <p-button pTooltip="Registrar producto" tooltipPosition="left" icon="pi pi-plus" (click)="goToCreateProducto()"></p-button>
     </div>
 </p-toolbar>

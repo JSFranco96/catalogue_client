@@ -1,14 +1,20 @@
 <div class="card flex justify-content-center">
     <p-card header="{{product.name}}" subheader="{{product.sku}}" [style]="{ width: '360px' }">
         <ng-template pTemplate="header">
-            <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+            <section class="p-3">
+                <img alt="Imagen del producto" src="{{product.image}}"/>
+            </section>
         </ng-template>
-        <p>
+        <div class="card flex justify-content-start gap-2">
+            <p-tag *ngFor="let tag of product.customTags" [severity]="tag.severity" [value]="tag.value" [rounded]="true"></p-tag>
+        </div>
+        <p class="mt-1">
             {{product.price | currency}}
         </p>
         <ng-template pTemplate="footer">
-            <p-button label="Modificar" icon="pi pi-pencil"></p-button>
-            <p-button label="Eliminar" icon="pi pi-trash" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>
+            <p-button label="Modificar" icon="pi pi-pencil" (click)="showDetail()"></p-button>
+            <p-button label="Eliminar" icon="pi pi-trash" styleClass="p-button-secondary"
+                [style]="{ 'margin-left': '.5em' }"></p-button>
         </ng-template>
     </p-card>
 </div>

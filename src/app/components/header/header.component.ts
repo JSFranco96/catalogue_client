@@ -1,42 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
+import { ProductDetailComponent } from '../product-detail/product-detail.component';
+import { CommunicationService } from 'src/app/services/communication.service';
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  items: MenuItem[] | undefined;
+export class HeaderComponent implements OnInit, OnDestroy {
+
+  #subs: Array<Subscription> = []
+
+  constructor(
+    public dialogService: DialogService,
+    public messageService: MessageService,
+    private communicationService: CommunicationService
+  ) { }
 
   ngOnInit() {
-    this.items = [
-      {
-        label: 'Update',
-        icon: 'pi pi-refresh'
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-times'
-      },
-      {
-        label: 'Angular',
-        icon: 'pi pi-external-link',
-        url: 'http://angular.io'
-      },
-      {
-        label: 'Router',
-        icon: 'pi pi-upload',
-        routerLink: '/fileupload'
-      }
-    ];
+    this.#listenTotalChange()
+  }
+
+  ngOnDestroy(): void {
+    for (const sub of this.#subs) {
+      sub.unsubscribe()
+    }
+
+    this.#subs = []
   }
 
   first = 0
-  rows = 1
-  totalRecords = 100
+  rows = 8
+  totalRecords = 0
+  #ref: DynamicDialogRef | undefined
+
+  goToCreateProducto() {
+    this.#ref = this.dialogService.open(ProductDetailComponent, {
+      header: 'Registrar producto',
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 5,
+      maximizable: true
+    })
+
+    this.#ref.onClose.subscribe((product: any) => {
+      if (product) {
+        this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: product.name });
+      }
+    });
+
+    this.#ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
+    });
+  }
 
   onPageChange(e: any) {
+    this.communicationService.pageSelected.emit(e.page)
+  }
 
+  #listenTotalChange() {
+    this.#subs.push(
+      this.communicationService.numberOfProducts.subscribe((total: number) => this.totalRecords = total)
+    )
   }
 }
