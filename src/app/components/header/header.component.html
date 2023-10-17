@@ -5,7 +5,9 @@
         </div>
     </div>
     <div class="p-toolbar-group-end gap-2">
-        <p-button icon="pi pi-search"></p-button>
-        <p-button pTooltip="Registrar producto" tooltipPosition="left" icon="pi pi-plus" (click)="goToCreateProducto()"></p-button>
+        <input pInputText id="name" type="text" class="w-full" placeholder="Buscar nombre, sku o etiqueta" [(ngModel)]="searchText">
+        <p-button pTooltip="Buscar por nombre, sku o etiqueta" tooltipPosition="left" icon="pi pi-search" (click)="searchByFilter()"></p-button>
+        <p-button pTooltip="Limpiar filtro" tooltipPosition="left" styleClass="p-button-danger" icon="pi pi-refresh" (click)="clearFilter()"></p-button>
+        <p-button styleClass="p-button-success" pTooltip="Registrar producto" tooltipPosition="left" icon="pi pi-plus" (click)="goToCreateProducto()"></p-button>
     </div>
 </p-toolbar>

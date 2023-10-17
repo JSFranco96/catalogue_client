@@ -13,6 +13,11 @@ import { Subscription } from 'rxjs'
 export class HeaderComponent implements OnInit, OnDestroy {
 
   #subs: Array<Subscription> = []
+  first: number = 0
+  rows: number = 8
+  totalRecords: number = 0
+  #ref: DynamicDialogRef | undefined
+  searchText: string = ''
 
   constructor(
     public dialogService: DialogService,
@@ -32,10 +37,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.#subs = []
   }
 
-  first = 0
-  rows = 8
-  totalRecords = 0
-  #ref: DynamicDialogRef | undefined
 
   goToCreateProducto() {
     this.#ref = this.dialogService.open(ProductDetailComponent, {
@@ -66,4 +67,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.communicationService.numberOfProducts.subscribe((total: number) => this.totalRecords = total)
     )
   }
+
+  searchByFilter() {
+    this.communicationService.filter.emit(this.searchText)
+  }
+
+  clearFilter() {
+    this.searchText = ''
+    this.communicationService.filter.emit('')
+  }
+
+
 }

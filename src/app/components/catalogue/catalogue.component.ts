@@ -14,10 +14,9 @@ import { CommunicationService } from 'src/app/services/communication.service';
 export class CatalogueComponent implements OnInit, OnDestroy {
 
   #subs: Array<Subscription> = []
-
   products: Array<GetProductsDTO> = []
-
   #currentPage: number = 0
+  filter: string = ''
 
   constructor(
     private productsService: ProductsService,
@@ -28,6 +27,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.getAll()
     this.#listenPageChange()
     this.#listenProductCreated()
+    this.#listenFilter()
   }
 
   ngOnDestroy(): void {
@@ -40,7 +40,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   getAll(page: number = 0): void {
     this.#subs.push(
-      this.productsService.getAll(page).subscribe(
+      this.productsService.getAll(page, this.filter).subscribe(
         (data: IResponse) => {
           if (data) {
             if (data.status !== 200) {
@@ -74,4 +74,14 @@ export class CatalogueComponent implements OnInit, OnDestroy {
       this.communicationService.actionOverProduct.subscribe(() => this.getAll(this.#currentPage))
     )
   }
+
+  #listenFilter() {
+    this.#subs.push(
+      this.communicationService.filter.subscribe((filter: string) => {
+        this.filter = filter
+        this.getAll()
+      })
+    )
+  }
+
 }

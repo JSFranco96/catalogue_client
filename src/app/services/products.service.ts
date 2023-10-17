@@ -23,8 +23,8 @@ export class ProductsService {
         return this.httpClient.patch(`${this.#url}/${product._id}`, this.#configFormData(product))
     }
 
-    getAll(page: number): Observable<any> {
-        return this.httpClient.get(`${this.#url}?page=${page}`)
+    getAll(page: number, filter: string = ''): Observable<any> {
+        return this.httpClient.get(`${this.#url}?page=${page}&filter=${filter}`)
     }
 
     getById(id: string): Observable<any> {

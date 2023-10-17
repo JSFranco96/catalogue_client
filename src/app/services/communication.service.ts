@@ -7,4 +7,6 @@ export class CommunicationService {
     pageSelected: EventEmitter<number> = new EventEmitter<number>()
     numberOfProducts: EventEmitter<number> = new EventEmitter<number>()
     actionOverProduct: EventEmitter<void> = new EventEmitter<void>()
+    filter: EventEmitter<string> = new EventEmitter<string>()
+
 }
